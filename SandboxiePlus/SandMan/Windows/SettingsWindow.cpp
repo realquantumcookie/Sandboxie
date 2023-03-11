@@ -1091,67 +1091,69 @@ void CSettingsWindow::SaveSettings()
 
 bool CSettingsWindow::ApplyCertificate(const QByteArray &Certificate, QWidget* widget)
 {
-	QString CertPath = theAPI->GetSbiePath() + "\\Certificate.dat";
-	if (!Certificate.isEmpty()) {
+	// QString CertPath = theAPI->GetSbiePath() + "\\Certificate.dat";
+	// if (!Certificate.isEmpty()) {
 
-		auto Args = GetArguments(Certificate, L'\n', L':');
+	// 	auto Args = GetArguments(Certificate, L'\n', L':');
 
-		bool bLooksOk = true;
-		if (Args.value("NAME").isEmpty()) // mandatory
-			bLooksOk = false;
-		//if (Args.value("UPDATEKEY").isEmpty())
-		//	bLooksOk = false;
-		if (Args.value("SIGNATURE").isEmpty()) // absolutely mandatory
-			bLooksOk = false;
+	// 	bool bLooksOk = true;
+	// 	if (Args.value("NAME").isEmpty()) // mandatory
+	// 		bLooksOk = false;
+	// 	//if (Args.value("UPDATEKEY").isEmpty())
+	// 	//	bLooksOk = false;
+	// 	if (Args.value("SIGNATURE").isEmpty()) // absolutely mandatory
+	// 		bLooksOk = false;
 
-		if (bLooksOk) {
-			QString TempPath = QDir::tempPath() + "/Sbie+Certificate.dat";
-			QFile CertFile(TempPath);
-			if (CertFile.open(QFile::WriteOnly)) {
-				CertFile.write(Certificate);
-				CertFile.close();
-			}
+	// 	if (bLooksOk) {
+	// 		QString TempPath = QDir::tempPath() + "/Sbie+Certificate.dat";
+	// 		QFile CertFile(TempPath);
+	// 		if (CertFile.open(QFile::WriteOnly)) {
+	// 			CertFile.write(Certificate);
+	// 			CertFile.close();
+	// 		}
 
-			WindowsMoveFile(TempPath.replace("/", "\\"), CertPath.replace("/", "\\"));
-		}
-		else {
-			QMessageBox::critical(widget, "Sandboxie-Plus", tr("This does not look like a certificate. Please enter the entire certificate, not just a portion of it."));
-			return false;
-		}
-	}
-	else if(!g_Certificate.isEmpty()){
-		WindowsMoveFile(CertPath.replace("/", "\\"), "");
-	}
+	// 		WindowsMoveFile(TempPath.replace("/", "\\"), CertPath.replace("/", "\\"));
+	// 	}
+	// 	else {
+	// 		QMessageBox::critical(widget, "Sandboxie-Plus", tr("This does not look like a certificate. Please enter the entire certificate, not just a portion of it."));
+	// 		return false;
+	// 	}
+	// }
+	// else if(!g_Certificate.isEmpty()){
+	// 	WindowsMoveFile(CertPath.replace("/", "\\"), "");
+	// }
 
-	if (Certificate.isEmpty())
-		return false;
+	// if (Certificate.isEmpty())
+	// 	return false;
 
-	if (!theAPI->ReloadCert().IsError())
-	{
-		g_FeatureFlags = theAPI->GetFeatureFlags();
-		g_Certificate = Certificate;
-		theGUI->UpdateCertState();
+	// if (!theAPI->ReloadCert().IsError())
+	// {
+	// 	g_FeatureFlags = theAPI->GetFeatureFlags();
+	// 	g_Certificate = Certificate;
+	// 	theGUI->UpdateCertState();
 
-		if (g_CertInfo.expired || g_CertInfo.outdated) {
-			if(g_CertInfo.expired)
-				QMessageBox::information(widget, "Sandboxie-Plus", tr("This certificate is unfortunately expired."));
-			else
-				QMessageBox::information(widget, "Sandboxie-Plus", tr("This certificate is unfortunately outdated."));
-		}
-		else {
-			QMessageBox::information(widget, "Sandboxie-Plus", tr("Thank you for supporting the development of Sandboxie-Plus."));
-		}
+	// 	if (g_CertInfo.expired || g_CertInfo.outdated) {
+	// 		if(g_CertInfo.expired)
+	// 			QMessageBox::information(widget, "Sandboxie-Plus", tr("This certificate is unfortunately expired."));
+	// 		else
+	// 			QMessageBox::information(widget, "Sandboxie-Plus", tr("This certificate is unfortunately outdated."));
+	// 	}
+	// 	else {
+	// 		QMessageBox::information(widget, "Sandboxie-Plus", tr("Thank you for supporting the development of Sandboxie-Plus."));
+	// 	}
 
-		return true;
-	}
-	else
-	{
-		QMessageBox::critical(widget, "Sandboxie-Plus", tr("This support certificate is not valid."));
+	// 	return true;
+	// }
+	// else
+	// {
+	// 	QMessageBox::critical(widget, "Sandboxie-Plus", tr("This support certificate is not valid."));
 
-		g_CertInfo.State = 0;
-		g_Certificate.clear();
-		return false;
-	}
+	// 	g_CertInfo.State = 0;
+	// 	g_Certificate.clear();
+	// 	return false;
+	// }
+	theGUI->UpdateCertState();
+	return true;
 }
 
 void CSettingsWindow::apply()

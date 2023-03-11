@@ -1018,6 +1018,7 @@ void COnlineUpdater::OnCertCheck()
 	}
 	else { // this should not happen
 		g_Certificate.clear();
-		g_CertInfo.State = 0;
+		//g_CertInfo.State = 0;
+		theGUI->UpdateCertState();
 	}
 }

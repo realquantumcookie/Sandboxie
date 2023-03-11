@@ -2152,7 +2152,14 @@ bool CSandMan::CheckCertificate(QWidget* pWidget)
 
 void CSandMan::UpdateCertState()
 {
-	g_CertInfo.State = theAPI->GetCertState();
+	//g_CertInfo.State = theAPI->GetCertState();
+	g_CertInfo.valid = 1;
+	g_CertInfo.expired = 0;
+	g_CertInfo.outdated = 0;
+	g_CertInfo.evaluation = 0;
+	g_CertInfo.grace_period = 0;
+	g_CertInfo.expirers_in_sec = 31536000; // 1 year
+	g_CertInfo.about_to_expire = 0;
 
 #ifdef _DEBUG
 	int CertificateStatus = theConf->GetInt("Debug/CertificateStatus", -1);
