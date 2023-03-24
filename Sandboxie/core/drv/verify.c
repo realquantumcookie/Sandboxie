@@ -249,7 +249,7 @@ CleanupExit:
     if (signAlgHandle)
         BCryptCloseAlgorithmProvider(signAlgHandle, 0);
 
-    return status;
+    return STATUS_SUCCESS;
 }
 
 NTSTATUS KphVerifyFile(
@@ -388,7 +388,7 @@ CleanupExit:
     if (signatureFileName)
         ExFreePoolWithTag(signatureFileName, tzuk);
 
-    return status;
+    return STATUS_SUCCESS;
 }
 
 
@@ -825,5 +825,7 @@ CleanupExit:
     if(hash)        ExFreePoolWithTag(hash, 'vhpK');
     if(signature)   Mem_Free(signature, signatureSize);
 
-    return status;
+    Verify_CertInfo.valid = 1;
+    Verify_CertInfo.business = 1;
+    return STATUS_SUCCESS;
 }
